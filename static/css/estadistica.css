@@ -1,0 +1,83 @@
+/* Reset de estilos y fuentes */
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Navbar (Encabezado de Navegación) */
+nav {
+    background-color: #343a40;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+nav a:hover {
+    color: #ffc107;
+}
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+/* Contenido principal */
+.container {
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+form {
+    margin-bottom: 15px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+form select,  button {
+    width: 25%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+ button {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.chart-container {
+    position: absolute; /* Puedes cambiar a relative o fixed según tus necesidades */
+    top: 220px; /* Cambia esto según la posición vertical que desees */
+    left: 600px; /* Cambia esto según la posición horizontal que desees */
+}
+
+@media print {
+    nav, button {
+        display: none;
+    }
+}

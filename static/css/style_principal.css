@@ -1,0 +1,146 @@
+/* Reset de estilos y fuentes */
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Fondo en movimiento */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* Fondo en movimiento - Descripción del fondo */
+    background: url('https://png.pngtree.com/background/20211215/original/pngtree-european-cup-sports-competition-hd-background-picture-image_1475402.jpg') center center fixed;
+    background-size: cover;
+    opacity: 0.5; /* Ajusta la opacidad según tus preferencias */
+}
+
+/* Navbar (Encabezado de Navegación) */
+nav {
+    background-color: #343a40;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out; /* Agregado para transición de color al pasar el ratón */
+}
+
+nav a:hover {
+    color: #ffc107; /* Cambia el color al pasar el ratón por encima */
+}
+
+ul {
+    list-style-type: none;
+    display: flex;
+}
+
+li {
+    margin-right: 20px;
+}
+
+/* Contenido principal */
+.container {
+    padding: 20px;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Centra los elementos en el contenedor */
+}
+
+.col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+
+.col-md-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+}
+
+.col-lg-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+/* Estilos para las tarjetas de equipo */
+.team-card {
+    background-color: #fff; /* Fondo blanco para las tarjetas */
+    border: 1px solid #ddd; /* Borde delgado alrededor de las tarjetas */
+    border-radius: 8px; /* Esquinas redondeadas */
+    padding: 20px; /* Espaciado interno para las tarjetas */
+    margin: 10px; /* Margen exterior entre las tarjetas */
+    text-align: center; /* Centrar el contenido dentro de las tarjetas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Ajustes para dispositivos pequeños */
+@media (max-width: 767px) {
+    .team-card {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Ajustes para dispositivos medianos */
+@media (min-width: 768px) and (max-width: 991px) {
+    .team-card {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+/* Ajustes para dispositivos grandes y extra grandes */
+@media (min-width: 992px) {
+    .team-card {
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    transition: transform 0.3s ease-in-out; /* Agregado para el efecto de zoom en hover */
+}
+
+.img-fluid:hover {
+    transform: scale(1.1);
+}
+
+/* Estilos para los enlaces */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+

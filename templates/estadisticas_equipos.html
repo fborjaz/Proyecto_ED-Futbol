@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Estadistica de Equipos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estadistica.css') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('principal') }}">Inicio</a></li>
+            <li><a href="{{ url_for('ingresar_equipos') }}">Ingresar Equipos</a></li>
+            <li><a href="{{ url_for('registrar_datos') }}">Registrar Datos</a></li>
+            <li><a href="{{ url_for('estadisticas_equipos') }}">Estadísticas</a></li>
+            <li><a href="{{ url_for('cerrar_sesion') }}">Cerrar Sesión</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <!-- Logo del equipo -->
+        {% if logo_url %}
+            <img src="{{ logo_url }}" alt="Logo del Equipo" style="max-width: 100px; max-height: 100px;">
+        {% endif %}
+    </header>
+
+    <div class="container">
+        <!-- Formulario de selección de equipos -->
+        <form method="post" id="equipoForm">
+            <label for="equipo">Seleccionar Equipo:</label>
+            <select name="equipo" id="equipoSelect">
+                {% for equipo in equipos %}
+                    <option value="{{ equipo.nombre }}" {% if selected_equipo == equipo.nombre %}selected{% endif %}>{{ equipo.nombre }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Mostrar Estadísticas</button>
+        </form>
+    </div>
+
+    <div class="stats-container">
+        <!-- Estadísticas Globales del Equipo -->
+        {% if estadisticas %}
+            <div class="team-stats">
+                <h2>Estadísticas Globales del Equipo</h2>
+                <p>Porcentaje de partidos ganados: {{ estadisticas.porcentaje_partidos_ganados }}%</p>
+                <p>Porcentaje de partidos empatados: {{ estadisticas.porcentaje_partidos_empatados }}%</p>
+                <p>Porcentaje de partidos perdidos: {{ estadisticas.porcentaje_partidos_perdidos }}%</p>
+            </div>
+
+            <!-- Estadísticas de Jugadores -->
+            <div class="player-stats">
+                <h2>Estadísticas de Jugadores</h2>
+                <p>Goles por remate: {{ estadisticas.goles_por_remate }}</p>
+                <p>Tarjetas amarillas por rojas: {{ estadisticas.tarjetas_amarillas_por_rojas }}</p>
+                <p>Mejor goleador: {{ estadisticas.mejor_goleador }}</p>
+                <p>Jugador con mayor riesgo de tarjetas rojas: {{ estadisticas.jugador_mayor_riesgo }}</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="chart-container">
+        <!-- Gráfico a la derecha de las estadísticas -->
+        <canvas id="myChart" width="" height=""></canvas>
+    </div>
+    <button onclick="imprimirPagina()">Descargar pdf</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('myChart').getContext('2d');
+
+            // Función para actualizar el gráfico
+            function actualizarGrafico(data) {
+                var myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Ganados', 'Empatados', 'Perdidos'],
+                        datasets: [{
+                            data: [data.porcentaje_partidos_ganados, data.porcentaje_partidos_empatados, data.porcentaje_partidos_perdidos],
+                            backgroundColor: ['#FF6F61', '#FFD700', '#4CAF50'],
+                            hoverBackgroundColor: ['#FF524F', '#FFC100', '#45A248'],
+                            borderColor: 'white',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutoutPercentage: 60,
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 15,
+                                fontSize: 14
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distribución de Resultados',
+                            fontSize: 18
+                        },
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        }
+                    }
+                });
+            }
+
+            // Obtener y actualizar el gráfico al cargar la página
+            fetch('/obtener_estadisticas_json', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({nombre_equipo: '{{ selected_equipo }}'})
+            })
+            .then(response => response.json())
+            .then(data => {
+                actualizarGrafico(data);
+            });
+
+            // Manejar cambios en el equipo seleccionado
+            document.getElementById('equipoSelect').addEventListener('change', function () {
+                fetch('/obtener_estadisticas_json', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({nombre_equipo: this.value})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Actualizar el gráfico con los nuevos datos
+                    actualizarGrafico(data);
+                });
+            });
+        });
+
+        // Función para imprimir la página
+        function imprimirPagina() {
+            window.print();
+        }
+    </script>
+
+</body>
+</html>
